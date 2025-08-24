@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.bpm.minotaur.MinotaurGame;
+import com.bpm.minotaur.sound.AY3914SoundChip;
 
 /**
  * Authentic Intellivision title screen recreation based on the original
@@ -24,6 +25,8 @@ public class MainMenuScreen extends BaseScreen {
     private GlyphLayout layout;
     private float animationTimer;
     private boolean textBlink;
+    private AY3914SoundChip soundChip;
+    private boolean hasPlayedSounds = false;
 
     // Target resolution constants
     private static final float TARGET_WIDTH = 1920f;
@@ -70,6 +73,9 @@ public class MainMenuScreen extends BaseScreen {
         layout = new GlyphLayout();
         animationTimer = 0f;
         textBlink = false;
+
+        // Initialize sound chip in show() instead of render()
+        soundChip = new AY3914SoundChip();
     }
 
     @Override
@@ -140,6 +146,16 @@ public class MainMenuScreen extends BaseScreen {
 
         game.batch.end();
 
+        // Play sounds once after rendering is complete
+        if (!hasPlayedSounds) {
+            try {
+                playStartUpSounds();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            hasPlayedSounds = true;
+        }
+
         // Check for input to start game
         if (Gdx.input.isTouched() || Gdx.input.isKeyJustPressed(com.badlogic.gdx.Input.Keys.ANY_KEY)) {
             game.setScreen(new GameScreen(game));
@@ -156,6 +172,11 @@ public class MainMenuScreen extends BaseScreen {
         font.draw(game.batch, text, x, y);
     }
 
+    private void playStartUpSounds() throws InterruptedException {
+        // Play startup sound
+        soundChip.playClassicSound("startup");
+    }
+
     @Override
     public void dispose() {
         if (titleFont != null) {
@@ -169,6 +190,9 @@ public class MainMenuScreen extends BaseScreen {
         }
         if (shapeRenderer != null) {
             shapeRenderer.dispose();
+        }
+        if (soundChip != null) {
+            soundChip.dispose();
         }
     }
 }
