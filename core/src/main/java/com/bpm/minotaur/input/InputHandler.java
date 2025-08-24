@@ -3,6 +3,7 @@ package com.bpm.minotaur.input;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
+import com.bpm.minotaur.debug.DebugManager;
 import com.bpm.minotaur.world.GameController;
 
 /**
@@ -24,10 +25,15 @@ public class InputHandler extends InputAdapter {
 
     @Override
     public boolean keyDown(int keycode) {
-        // We only handle non-movement, single-press actions here now.
-        if (keycode == Input.Keys.ESCAPE) {
-            Gdx.app.exit();
-            return true;
+        // Handle single-press actions
+        switch (keycode) {
+            case Input.Keys.ESCAPE:
+                Gdx.app.exit();
+                return true;
+            case Input.Keys.F1:
+                // Toggle the debug overlay when F1 is pressed.
+                DebugManager.INSTANCE.toggleDebugOverlay();
+                return true;
         }
         return false;
     }
@@ -48,4 +54,3 @@ public class InputHandler extends InputAdapter {
         }
     }
 }
-

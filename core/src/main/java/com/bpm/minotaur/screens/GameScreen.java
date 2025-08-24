@@ -3,6 +3,7 @@ package com.bpm.minotaur.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.bpm.minotaur.MinotaurGame;
+import com.bpm.minotaur.debug.DebugManager;
 import com.bpm.minotaur.input.InputHandler;
 import com.bpm.minotaur.world.GameController;
 import com.bpm.minotaur.world.GameWorld;
@@ -42,19 +43,16 @@ public class GameScreen extends BaseScreen {
 
     @Override
     public void render(float delta) {
-        // Note: For now, we are calling moveForward from handleContinuousInput.
-        // This will result in very fast movement. We will fix this in a later step
-        // by adding a delay/timer to movement.
         inputHandler.handleContinuousInput(delta);
-
-        // Update the game logic.
         gameController.update(delta);
 
         // Clear the screen with a black color.
         ScreenUtils.clear(0, 0, 0, 1);
 
-        // Tell the WorldRenderer to draw the world.
-        worldRenderer.render();
+        // Only render the debug view if the flag is set to true.
+        if (DebugManager.INSTANCE.isDebugOverlayVisible()) {
+            worldRenderer.render();
+        }
     }
 
     @Override
