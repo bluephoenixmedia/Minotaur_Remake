@@ -9,7 +9,7 @@ buildscript {
     maven { url 'https://s01.oss.sonatype.org/content/repositories/snapshots/' }
   }
   dependencies {
-
+    // other dependencies like gdx, gdx-backend-lwjgl3, etc.
 
   }
 }
