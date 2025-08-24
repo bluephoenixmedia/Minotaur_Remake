@@ -260,9 +260,7 @@ This project is licensed under the [MIT License](LICENSE) - see the LICENSE file
 
 ## 📞 Contact
 
-- **Project Maintainer:** [Your Name](mailto:your.email@example.com)
-- **Issues:** Use the [GitHub Issues](https://github.com/your-username/minotaur-remake/issues) page
-- **Discussions:** Join our [community discussions](https://github.com/your-username/minotaur-remake/discussions)
+- **Project Maintainer:** [Dennis Gotto](mailto:dennis.gotto@gmail.com)
 
 ---
 
