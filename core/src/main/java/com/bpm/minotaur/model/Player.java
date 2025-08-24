@@ -31,17 +31,16 @@ public class Player {
         this.food = 6;
         this.arrows = 6;
 
-        // Starting position in the 12x12 grid (top-left corner).
-        this.x = 1;
-        this.y = 1;
+        // Updated starting position to be on a valid FLOOR tile.
+        this.x = 2;
+        this.y = 2;
 
         // Player starts facing East according to the original manual.
         this.facing = Direction.EAST;
         // this.inventory = new Inventory();
     }
 
-    // We will add methods for moving, attacking, etc., here later.
-    // For now, we'll just add getters and setters for the attributes.
+    // Getters and Setters
 
     public int getWarStrength() {
         return warStrength;

@@ -3,6 +3,7 @@ package com.bpm.minotaur.input;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
+import com.bpm.minotaur.world.GameController;
 
 /**
  * Handles all player input for the game.
@@ -11,45 +12,40 @@ import com.badlogic.gdx.InputAdapter;
  */
 public class InputHandler extends InputAdapter {
 
+    private final GameController gameController;
+
     /**
-     * This method is called by the libGDX framework whenever a key is pressed.
-     * @param keycode one of the constants in {@link Input.Keys}
-     * @return whether the input was processed
+     * Constructor for the InputHandler.
+     * @param gameController The controller that will execute game actions.
      */
+    public InputHandler(GameController gameController) {
+        this.gameController = gameController;
+    }
+
     @Override
     public boolean keyDown(int keycode) {
-        // We will use this method to handle single-press actions,
-        // like opening a door or using an item.
-
-        switch (keycode) {
-            case Input.Keys.ESCAPE:
-                // Exit the game when the Escape key is pressed.
-                Gdx.app.exit();
-                return true;
+        // We only handle non-movement, single-press actions here now.
+        if (keycode == Input.Keys.ESCAPE) {
+            Gdx.app.exit();
+            return true;
         }
-
         return false;
     }
 
     /**
      * This method is called in the main game loop to handle continuous input,
-     * such as holding down a key to move.
+     * such as holding down a key to move or turn.
      */
     public void handleContinuousInput(float delta) {
-        // We use isKeyPressed for movement because it checks if a key is currently held down,
-        // which feels more natural for movement than the single-press keyDown event.
-
         if (Gdx.input.isKeyPressed(Input.Keys.W)) {
-            // Placeholder for moving forward
-            Gdx.app.log("InputHandler", "Move Forward");
+            gameController.tryMoveForward();
         }
         if (Gdx.input.isKeyPressed(Input.Keys.A)) {
-            // Placeholder for turning left
-            Gdx.app.log("InputHandler", "Turn Left");
+            gameController.tryTurnLeft();
         }
         if (Gdx.input.isKeyPressed(Input.Keys.D)) {
-            // Placeholder for turning right
-            Gdx.app.log("InputHandler", "Turn Right");
+            gameController.tryTurnRight();
         }
     }
 }
+

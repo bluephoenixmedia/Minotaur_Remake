@@ -4,8 +4,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.bpm.minotaur.MinotaurGame;
 import com.bpm.minotaur.input.InputHandler;
-import com.bpm.minotaur.model.Maze;
-import com.bpm.minotaur.world.MazeGenerator;
+import com.bpm.minotaur.world.GameController;
+import com.bpm.minotaur.world.GameWorld;
 import com.bpm.minotaur.world.WorldRenderer;
 
 /**
@@ -15,9 +15,9 @@ import com.bpm.minotaur.world.WorldRenderer;
 public class GameScreen extends BaseScreen {
 
     private final InputHandler inputHandler;
-    private final MazeGenerator mazeGenerator;
     private final WorldRenderer worldRenderer;
-    private final Maze maze;
+    private final GameWorld gameWorld;
+    private final GameController gameController;
 
     /**
      * Constructor for the game screen.
@@ -25,16 +25,14 @@ public class GameScreen extends BaseScreen {
      */
     public GameScreen(MinotaurGame game) {
         super(game);
-        this.inputHandler = new InputHandler();
 
-        // Create a new MazeGenerator.
-        this.mazeGenerator = new MazeGenerator();
+        // Create the world and controller.
+        this.gameWorld = new GameWorld();
+        this.gameController = new GameController(gameWorld);
 
-        // Generate the first level of the maze.
-        this.maze = mazeGenerator.generate(1);
-
-        // Create a WorldRenderer to draw our maze.
-        this.worldRenderer = new WorldRenderer(maze);
+        // Create the input handler and renderer, passing them the necessary components.
+        this.inputHandler = new InputHandler(gameController);
+        this.worldRenderer = new WorldRenderer(gameWorld);
     }
 
     @Override
@@ -44,18 +42,23 @@ public class GameScreen extends BaseScreen {
 
     @Override
     public void render(float delta) {
+        // Note: For now, we are calling moveForward from handleContinuousInput.
+        // This will result in very fast movement. We will fix this in a later step
+        // by adding a delay/timer to movement.
         inputHandler.handleContinuousInput(delta);
+
+        // Update the game logic.
+        gameController.update(delta);
 
         // Clear the screen with a black color.
         ScreenUtils.clear(0, 0, 0, 1);
 
-        // Tell the WorldRenderer to draw the maze.
+        // Tell the WorldRenderer to draw the world.
         worldRenderer.render();
     }
 
     @Override
     public void dispose() {
-        // Dispose of the renderer's resources when this screen is closed.
         worldRenderer.dispose();
     }
 }
