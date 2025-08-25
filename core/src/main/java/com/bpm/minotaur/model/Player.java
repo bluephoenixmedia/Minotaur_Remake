@@ -17,8 +17,8 @@ public class Player {
     private int y;
     private Direction facing;
 
-    // We will create the Inventory class later.
-    // private Inventory inventory;
+    // Player's inventory
+    private final Inventory inventory;
 
     /**
      * Constructor for a new Player.
@@ -37,7 +37,7 @@ public class Player {
 
         // Player starts facing East according to the original manual.
         this.facing = Direction.EAST;
-        // this.inventory = new Inventory();
+        this.inventory = new Inventory();
     }
 
     // Getters and Setters
@@ -96,5 +96,9 @@ public class Player {
 
     public void setFacing(Direction facing) {
         this.facing = facing;
+    }
+
+    public Inventory getInventory() {
+        return inventory;
     }
 }
