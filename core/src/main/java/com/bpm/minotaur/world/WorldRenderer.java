@@ -1,6 +1,9 @@
 package com.bpm.minotaur.world;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.bpm.minotaur.model.Maze;
 import com.bpm.minotaur.model.Player;
@@ -14,6 +17,12 @@ public class WorldRenderer {
 
     private final GameWorld gameWorld;
     private final ShapeRenderer shapeRenderer;
+    private SpriteBatch batch;
+    private OrthographicCamera camera;
+
+    private final MonsterGenerator monsterGenerator;
+    private Texture antTexture;
+
 
     /**
      * Constructor for the WorldRenderer.
@@ -22,6 +31,14 @@ public class WorldRenderer {
     public WorldRenderer(GameWorld gameWorld) {
         this.gameWorld = gameWorld;
         this.shapeRenderer = new ShapeRenderer();
+        this.batch = new SpriteBatch();
+
+        // Create camera matching your world coordinates
+        this.camera = new OrthographicCamera();
+        this.camera.setToOrtho(false, 1920, 1080); // Adjust to your game's dimensions
+
+        this.monsterGenerator = new MonsterGenerator();
+
     }
 
     /**
@@ -30,6 +47,9 @@ public class WorldRenderer {
     public void render() {
         Maze maze = gameWorld.getMaze();
         Player player = gameWorld.getPlayer();
+        Texture antTexture = monsterGenerator.getAntTexture(32);
+
+        camera.update();
 
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
 
@@ -51,6 +71,14 @@ public class WorldRenderer {
         shapeRenderer.rect(player.getX() * 20, player.getY() * 20, 20, 20);
 
         shapeRenderer.end();
+
+        batch.setProjectionMatrix(camera.combined);
+        batch.begin();
+        batch.draw(antTexture, 800, 400);
+        batch.end();
+        //antTexture.draw(monsterGenerator.getAntTexture());
+
+
     }
 
     /**
@@ -58,5 +86,6 @@ public class WorldRenderer {
      */
     public void dispose() {
         shapeRenderer.dispose();
+        monsterGenerator.dispose();
     }
 }
