@@ -1,15 +1,57 @@
 package com.bpm.minotaur.world;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.utils.JsonReader;
+import com.badlogic.gdx.utils.JsonValue;
 import com.bpm.minotaur.model.Maze;
 import com.bpm.minotaur.model.Quadrant;
 import com.bpm.minotaur.model.Tile;
 import com.bpm.minotaur.model.TileType;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Responsible for procedurally generating maze levels.
  * It uses the Quadrant-based Assembly algorithm defined in the design document.
  */
 public class MazeGenerator {
+
+    private final List<Quadrant> quadrantLibrary;
+
+    /**
+     * Constructor for the MazeGenerator.
+     * It loads the quadrant templates from the JSON file.
+     */
+    public MazeGenerator() {
+        quadrantLibrary = new ArrayList<>();
+        loadQuadrants();
+    }
+
+    /**
+     * Loads quadrant definitions from the quadrants.json file.
+     */
+    private void loadQuadrants() {
+        JsonReader jsonReader = new JsonReader();
+        JsonValue base = jsonReader.parse(Gdx.files.internal("quadrants.json"));
+        JsonValue quadrantsArray = base.get("quadrants");
+
+        for (JsonValue quadrantValue : quadrantsArray) {
+            String[] gridStrings = quadrantValue.get("grid").asStringArray();
+            TileType[][] grid = new TileType[Quadrant.QUADRANT_SIZE][Quadrant.QUADRANT_SIZE];
+
+            for (int y = 0; y < Quadrant.QUADRANT_SIZE; y++) {
+                for (int x = 0; x < Quadrant.QUADRANT_SIZE; x++) {
+                    char tileChar = gridStrings[y].charAt(x);
+                    if (tileChar == 'W') {
+                        grid[x][y] = TileType.WALL;
+                    } else {
+                        grid[x][y] = TileType.FLOOR;
+                    }
+                }
+            }
+            quadrantLibrary.add(new Quadrant(grid));
+        }
+    }
 
     /**
      * Generates a new maze for a given level.
@@ -19,19 +61,12 @@ public class MazeGenerator {
     public Maze generate(int level) {
         Maze maze = new Maze(level);
 
-        // For now, create a simple, hardcoded test quadrant.
-        // Later, we will load a library of these from a JSON file.
-        TileType[][] quadrantGrid = new TileType[][]{
-            {TileType.WALL, TileType.WALL, TileType.WALL, TileType.WALL, TileType.WALL},
-            {TileType.WALL, TileType.FLOOR, TileType.FLOOR, TileType.FLOOR, TileType.WALL},
-            {TileType.WALL, TileType.FLOOR, TileType.WALL, TileType.FLOOR, TileType.WALL},
-            {TileType.WALL, TileType.FLOOR, TileType.FLOOR, TileType.FLOOR, TileType.WALL},
-            {TileType.WALL, TileType.WALL, TileType.WALL, TileType.WALL, TileType.WALL}
-        };
-        Quadrant testQuadrant = new Quadrant(quadrantGrid);
+        // Select a quadrant from our loaded library.
+        // Later, we will add logic to select based on difficulty.
+        Quadrant quadrant = quadrantLibrary.get(0);
 
-        // Assemble the maze using the test quadrant for all four sections.
-        assembleMaze(maze, testQuadrant, testQuadrant, testQuadrant, testQuadrant);
+        // Assemble the maze using the selected quadrant for all four sections.
+        assembleMaze(maze, quadrant, quadrant, quadrant, quadrant);
 
         return maze;
     }
