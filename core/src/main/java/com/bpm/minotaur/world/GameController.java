@@ -1,6 +1,9 @@
 package com.bpm.minotaur.world;
 
+import com.badlogic.gdx.Gdx;
 import com.bpm.minotaur.model.Direction;
+import com.bpm.minotaur.model.Inventory;
+import com.bpm.minotaur.model.Item;
 import com.bpm.minotaur.model.Maze;
 import com.bpm.minotaur.model.Player;
 import com.bpm.minotaur.model.Tile;
@@ -33,6 +36,30 @@ public class GameController {
         // Decrement the move timer every frame.
         if (moveTimer > 0) {
             moveTimer -= delta;
+        }
+    }
+
+    /**
+     * Attempts to pick up an item from the tile the player is currently on.
+     */
+    public void tryPickupItem() {
+        Player player = gameWorld.getPlayer();
+        Maze maze = gameWorld.getMaze();
+        Tile currentTile = maze.getTile(player.getX(), player.getY());
+        Item itemOnFloor = currentTile.getItem();
+
+        if (itemOnFloor != null) {
+            Inventory inventory = player.getInventory();
+            boolean success = inventory.pickup(itemOnFloor);
+            if (success) {
+                // If the item was picked up, remove it from the floor.
+                currentTile.setItem(null);
+                Gdx.app.log("GameController", "Picked up: " + itemOnFloor.getName());
+            } else {
+                Gdx.app.log("GameController", "Could not pick up item, right hand is full.");
+            }
+        } else {
+            Gdx.app.log("GameController", "No item to pick up.");
         }
     }
 

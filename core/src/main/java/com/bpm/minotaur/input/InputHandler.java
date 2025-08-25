@@ -34,6 +34,10 @@ public class InputHandler extends InputAdapter {
                 // Toggle the debug overlay when F1 is pressed.
                 DebugManager.INSTANCE.toggleDebugOverlay();
                 return true;
+            case Input.Keys.E:
+                // Attempt to pick up an item when E is pressed.
+                gameController.tryPickupItem();
+                return true;
         }
         return false;
     }

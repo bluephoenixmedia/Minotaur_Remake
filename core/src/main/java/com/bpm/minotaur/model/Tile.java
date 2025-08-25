@@ -7,9 +7,9 @@ package com.bpm.minotaur.model;
 public class Tile {
 
     private TileType type;
-    // We will create the Monster and Item classes later.
+    // We will create the Monster class later.
     // private Monster monster;
-    // private Item item;
+    private Item item;
 
     /**
      * Constructor for a new Tile.
@@ -18,7 +18,7 @@ public class Tile {
     public Tile(TileType type) {
         this.type = type;
         // this.monster = null; // A tile is empty by default.
-        // this.item = null;
+        this.item = null;
     }
 
     public TileType getType() {
@@ -29,5 +29,11 @@ public class Tile {
         this.type = type;
     }
 
-    // We will add getters and setters for monster and item later.
+    public Item getItem() {
+        return item;
+    }
+
+    public void setItem(Item item) {
+        this.item = item;
+    }
 }

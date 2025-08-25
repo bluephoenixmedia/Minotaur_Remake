@@ -21,7 +21,23 @@ public class Inventory {
         this.leftHand = null;
     }
 
-    // We will add methods for swapping, rotating, picking up, and dropping items here later.
+    /**
+     * Attempts to pick up an item from the floor.
+     * The item will be placed in the right hand if it's empty.
+     * If the right hand is full, this method does nothing for now.
+     * @param item The item to pick up.
+     * @return true if the item was successfully picked up, false otherwise.
+     */
+    public boolean pickup(Item item) {
+        if (rightHand == null) {
+            setRightHand(item);
+            return true;
+        }
+        // We will add logic for a full hand (swapping) later.
+        return false;
+    }
+
+    // We will add methods for swapping, rotating, and dropping items here later.
 
     public Item getRightHand() {
         return rightHand;
