@@ -1,0 +1,15 @@
+{
+  "quadrants": [
+    {
+      "id": 0,
+      "difficulty": 1,
+      "grid": [
+        "WWWWW",
+        "W...W",
+        "W.W.W",
+        "W...W",
+        "WWWWW"
+      ]
+    }
+  ]
+}
