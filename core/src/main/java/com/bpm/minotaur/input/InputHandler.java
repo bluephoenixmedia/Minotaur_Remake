@@ -38,6 +38,10 @@ public class InputHandler extends InputAdapter {
                 // Attempt to pick up an item when E is pressed.
                 gameController.tryPickupItem();
                 return true;
+            case Input.Keys.Q:
+                // Attempt to drop an item when Q is pressed.
+                gameController.tryDropItem();
+                return true;
         }
         return false;
     }

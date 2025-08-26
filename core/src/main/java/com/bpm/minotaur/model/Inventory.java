@@ -37,7 +37,19 @@ public class Inventory {
         return false;
     }
 
-    // We will add methods for swapping, rotating, and dropping items here later.
+    /**
+     * Drops the item currently held in the right hand.
+     * @return The item that was dropped, or null if the hand was empty.
+     */
+    public Item dropRightHand() {
+        Item itemToDrop = rightHand;
+        if (itemToDrop != null) {
+            setRightHand(null);
+        }
+        return itemToDrop;
+    }
+
+    // We will add methods for swapping and rotating items here later.
 
     public Item getRightHand() {
         return rightHand;

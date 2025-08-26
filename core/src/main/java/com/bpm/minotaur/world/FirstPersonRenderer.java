@@ -56,7 +56,13 @@ public class FirstPersonRenderer {
             shapeRenderer.setColor(darkWallColor);
             shapeRenderer.rect(width * 0.1f, height * 0.1f, width * 0.8f, height * 0.8f);
         } else {
-            // If there's no wall directly in front, draw the side walls of the corridor ahead
+            // If there's no wall directly in front, draw the corridor ahead
+            shapeRenderer.setColor(floorColor);
+            // Draw distant floor
+            shapeRenderer.rect(width * 0.1f, height * 0.1f, width * 0.8f, height * 0.2f);
+            // Draw distant ceiling
+            shapeRenderer.rect(width * 0.1f, height * 0.7f, width * 0.8f, height * 0.2f);
+
             if (isWallAtRelative(-1, 1)) { // Wall to the left, one tile ahead
                 shapeRenderer.setColor(lightWallColor);
                 shapeRenderer.rect(width * 0.1f, height * 0.1f, width * 0.2f, height * 0.8f);

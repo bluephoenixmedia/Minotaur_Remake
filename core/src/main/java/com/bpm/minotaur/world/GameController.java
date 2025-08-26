@@ -64,6 +64,28 @@ public class GameController {
     }
 
     /**
+     * Attempts to drop the item from the player's right hand onto the current tile.
+     */
+    public void tryDropItem() {
+        Player player = gameWorld.getPlayer();
+        Maze maze = gameWorld.getMaze();
+        Tile currentTile = maze.getTile(player.getX(), player.getY());
+
+        if (currentTile.getItem() == null) {
+            Inventory inventory = player.getInventory();
+            Item droppedItem = inventory.dropRightHand();
+            if (droppedItem != null) {
+                currentTile.setItem(droppedItem);
+                Gdx.app.log("GameController", "Dropped: " + droppedItem.getName());
+            } else {
+                Gdx.app.log("GameController", "Right hand is empty.");
+            }
+        } else {
+            Gdx.app.log("GameController", "Cannot drop item, tile is occupied.");
+        }
+    }
+
+    /**
      * Attempts to move the player forward, but only if the cooldown timer has expired.
      */
     public void tryMoveForward() {
